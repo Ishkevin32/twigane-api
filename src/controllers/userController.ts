@@ -1,7 +1,7 @@
 import { Request, RequestHandler } from "express";
 import multer from "multer";
 const sharp = require('sharp');
-import { User, IUser } from "./../models/user";
+import { User, IUser } from "./../model/user";
 import catchAsync from "./../utils/catchAsync";
 import AppError from "./../utils/appError";
 import * as factory from "./handlerFactory";
