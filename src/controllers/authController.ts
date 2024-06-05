@@ -2,12 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
 const jwt = require("jsonwebtoken");
 import { promisify } from "util";
-import { User, IUser } from "./../models/user";
+import { User, IUser } from "./../model/user";
+import { Subscription } from './../model/subscription';
 import catchAsync from "./../utils/catchAsync";
 import AppError from "./../utils/appError";
 import Email from "./../utils/email";
 
-const signToken = (id: string) => {
+const signToken = (id: any) => {
   return jwt.sign({ id }, process.env.JWT_SECRET!, {
     expiresIn: process.env.JWT_EXPIRES_IN!,
   });
@@ -196,6 +197,23 @@ export const restrictTo = (...roles: string[]) => {
     next();
   };
 };
+
+export const restrictToSubscribedUsers = catchAsync(async (req: any, res: Response, next: NextFunction) => {
+  const userId = req.user._id;
+  const currentDate = new Date();
+
+  const subscription = await Subscription.findOne({
+    user: userId,
+    endDate: { $gte: currentDate },
+  });
+
+  if (!subscription) {
+    return next(new AppError('You do not have an active subscription to access this resource', 403));
+  }
+
+  next();
+});
+
 
 export const forgotPassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

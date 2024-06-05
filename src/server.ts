@@ -24,7 +24,7 @@ const DB = process.env.DATABASE!.replace(
     process.exit(1);
   });
   
-  const port = process.env.PORT || 3002;
+  const port = process.env.PORT || 3003;
   const server = app.listen(port, () => {
     console.log(`App running on port ${port}...`);
   });

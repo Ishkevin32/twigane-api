@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import pug from 'pug';
-import htmlToText from 'html-to-text';
-import { IUser } from '../models/user';
+// import htmlToText from 'html-to-text';
+import { IUser } from '../model/user';
 
 export default class Email {
   to: string;
